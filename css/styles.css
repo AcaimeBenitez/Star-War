@@ -12,6 +12,8 @@
   --r: #b3202a;
   --sb: #a9ccff;
   --sr: #ffb8bd;
+  --g: #1e7b34;
+  --sg: #a8e6b4;
   --acc: var(--b);
   --sec: var(--sb);
 }
@@ -45,11 +47,18 @@ html[data-saber="red"] {
   --sec: var(--sr);
 }
 
+html[data-saber="green"] {
+  --acc: var(--g);
+  --sec: var(--sg);
+}
+
 html[data-cvd="deuteranopia"] {
   --b: #0072B2;
   --r: #B34700;
   --sb: #E69F00;
   --sr: #56B4E9;
+  --g: #005A36;
+  --sg: #D4F0C8;
 }
 
 html[data-cvd="protanopia"] {
@@ -57,6 +66,8 @@ html[data-cvd="protanopia"] {
   --r: #A04A00;
   --sb: #F0E442;
   --sr: #56B4E9;
+  --g: #2E7D32;
+  --sg: #C8E6C9;
 }
 
 html[data-cvd="tritanopia"] {
@@ -64,6 +75,8 @@ html[data-cvd="tritanopia"] {
   --r: #B3202A;
   --sb: #F4A6B0;
   --sr: #7FD6D6;
+  --g: #1B5E20;
+  --sg: #DCEDC8;
 }
 
 html[data-cvd="grises"] {
@@ -71,6 +84,8 @@ html[data-cvd="grises"] {
   --r: #111111;
   --sb: #e4e4e4;
   --sr: #e4e4e4;
+  --g: #595959;
+  --sg: #e4e4e4;
 }
 
 /* ACCESIBILIDAD Y FOCO */
@@ -460,6 +475,11 @@ html[data-saber="red"] * {
   cursor: url("../img/saber-red.svg") 3 3, auto !important;
 }
 
+html[data-saber="green"],
+html[data-saber="green"] * {
+  cursor: url("../img/saber-green.svg") 3 3, auto !important;
+}
+
 /* PIE DE PÁGINA */
 footer {
   background: #000;
@@ -688,3 +708,160 @@ footer a {
         height: auto;
     }
 }
+
+
+/* ============================================
+   RESERVA DE ESPACIO (evita saltos de diseño, CLS)
+   Ajusta los valores a la altura real que midas
+   ============================================ */
+#films-root {
+  min-height: 620px;
+}
+
+@media (max-width: 600px) {
+  #films-root {
+    min-height: 520px;
+  }
+}
+
+@media (min-width: 601px) {
+  #cursor-root {
+    min-height: 146px;
+  }
+
+  #palette-root {
+    min-height: 246px;
+  }
+
+  #audio-root {
+    min-height: 96px;
+  }
+}
+
+/* ============================================
+   ESTRELLA DE LA MUERTE (SVG animado)
+   ============================================ */
+#estrella {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section-intro {
+  max-width: 60ch;
+  text-align: center;
+}
+
+#deathstar-root {
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 800 / 420;
+  margin-top: 1rem;
+}
+
+.ds-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 800 / 420;
+  background: #05070d;
+  border: 3px solid #fff;
+  border-radius: .75rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .6);
+}
+
+.ds-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.btn-sw[aria-disabled="true"] {
+  opacity: .65;
+}
+
+/* Estado base (sin animación): también es lo que ve quien tiene
+   activado "reducir movimiento" */
+.ds-star { fill: #fff; opacity: .8; }
+.ds-core { fill: #27402f; }
+.ds-charge-glow { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.ds-beam { opacity: 0; }
+.ds-planet { transform-box: fill-box; transform-origin: center; }
+.ds-fx { opacity: 0; }
+.ds-ring { opacity: .7; transform-box: fill-box; transform-origin: center; }
+.ds-flash { opacity: .5; transform-box: fill-box; transform-origin: center; }
+.ds-debris { fill: #ffb070; opacity: .8; }
+
+.ds-charging .ds-core,
+.ds-firing .ds-core { fill: #9dffb8; }
+
+.ds-charging .ds-charge-glow,
+.ds-firing .ds-charge-glow { opacity: 1; }
+
+.ds-firing .ds-beam { opacity: 1; }
+.ds-boom .ds-planet { opacity: 0; }
+.ds-boom .ds-fx { opacity: 1; }
+
+/* Animaciones: solo si la persona no pidió reducir el movimiento */
+@media (prefers-reduced-motion: no-preference) {
+  .ds-surface {
+    animation: ds-spin 30s linear infinite;
+  }
+
+  .ds-lights {
+    animation: ds-run 4.1s linear infinite;
+  }
+
+  .ds-star {
+    animation: ds-twinkle var(--d, 3s) ease-in-out var(--w, 0s) infinite;
+  }
+
+  .ds-idle .ds-planet {
+    animation: ds-appear 1s ease-out;
+  }
+
+  .ds-charging .ds-core {
+    animation: ds-pulse .45s ease-in-out infinite alternate;
+  }
+
+  .ds-charging .ds-charge-glow {
+    animation: ds-charge 1.8s ease-in forwards;
+  }
+
+  .ds-firing .ds-beam {
+    animation: ds-shoot .5s ease-out forwards;
+  }
+
+  .ds-boom .ds-planet {
+    animation: ds-vanish .5s ease-in forwards;
+  }
+
+  .ds-boom .ds-flash {
+    animation: ds-flash .9s ease-out forwards;
+  }
+
+  .ds-boom .ds-ring {
+    animation: ds-ring 1.6s ease-out forwards;
+  }
+
+  .ds-boom .ds-ring2 {
+    animation-delay: .25s;
+    animation-duration: 2s;
+  }
+
+  .ds-boom .ds-debris {
+    animation: ds-fly 2s ease-out forwards;
+  }
+}
+
+@keyframes ds-spin { to { transform: translateX(-80px); } }
+@keyframes ds-run { to { stroke-dashoffset: -11; } }
+@keyframes ds-twinkle { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+@keyframes ds-appear { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+@keyframes ds-pulse { from { opacity: .45; } to { opacity: 1; } }
+@keyframes ds-charge { from { transform: scale(.15); } to { transform: scale(1.5); } }
+@keyframes ds-shoot { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes ds-vanish { to { opacity: 0; transform: scale(1.35); } }
+@keyframes ds-flash { from { opacity: 1; transform: scale(.4); } to { opacity: 0; transform: scale(1.6); } }
+@keyframes ds-ring { from { opacity: 1; transform: scale(.3); } to { opacity: 0; transform: scale(4); } }
+@keyframes ds-fly { from { opacity: 1; transform: translate(0, 0); } to { opacity: 0; transform: translate(var(--dx), var(--dy)); } }
