@@ -1,5 +1,3 @@
-/* GALAXIA SW */
-
 /* VARIABLES */
 :root {
   --bg: #101214;
@@ -16,9 +14,6 @@
   --sg: #a8e6b4;
   --acc: var(--b);
   --sec: var(--sb);
-
-  /* Medidas de la maquetación: las usan el menú, el contenido y el pie.
-     Si cambias el ancho del menú, cámbialo solo aquí. */
   --sidebar: 290px;
   --gutter: clamp(1rem, 3vw, 3rem);
 }
@@ -39,7 +34,6 @@ body {
   font: 1.05rem/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color: #fff;
   background: var(--bg);
-  /* Pie siempre al final: si hay poco contenido, .layout ocupa el hueco */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -145,6 +139,8 @@ html[data-cvd="grises"] {
   height: 100dvh;
   overflow-y: auto;
   overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--acc) transparent;
   z-index: 20;
   background: #fff;
   color: #111827;
@@ -158,6 +154,23 @@ html[data-cvd="grises"] {
   gap: 1.25rem;
   min-height: 100%;
   padding: 1.25rem 1rem;
+}
+
+/* Navegadores sin scrollbar-color (Safari antiguo): misma barra con -webkit */
+@supports not (scrollbar-color: auto) {
+  .sidebar::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .sidebar::-webkit-scrollbar-thumb {
+    background: var(--acc);
+    border-radius: 8px;
+    border: 2px solid #fff;
+  }
 }
 
 /* El botón del menú solo existe en móvil */
@@ -792,9 +805,7 @@ footer p {
 @keyframes ds-ring { from { opacity: 1; transform: scale(.3); } to { opacity: 0; transform: scale(4); } }
 @keyframes ds-fly { from { opacity: 1; transform: translate(0, 0); } to { opacity: 0; transform: translate(var(--dx), var(--dy)); } }
 
-/* ============================================
-   RESPONSIVE (al final para que gane a lo anterior)
-   ============================================ */
+/*RESPONSIVE */
 
 /* TABLETS */
 @media (max-width: 900px) {
