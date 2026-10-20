@@ -1,167 +1,208 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" data-saber="blue" data-cvd="normal">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universo Star Wars</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Star Wars | Guía de Star Wars</title>
+  <meta name="description"
+    content="Descubre cinco películas de Star Wars en una página accesible para todos los públicos.">
+  <meta name="theme-color" content="#ffffff">
+
+  <!-- Conexión anticipada al CDN de Bootstrap -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- CSS principal: carga normal (sin truco media="print") para evitar saltos de diseño -->
+  <link rel="stylesheet" href="./css/styles.css">
+
+  <!-- Scripts con defer: se descargan en paralelo y se ejecutan en este orden -->
+  <script src="vendor/react.production.min.js" defer></script>
+  <script src="vendor/react-dom.production.min.js" defer></script>
+  <script src="vendor/htm.umd.js" defer></script>
+  <script src="./js/menu.js" defer></script>
+  <script src="./js/app.js" defer></script>
 </head>
 
-<body class="bg-dark text-white">
+<body>
 
-    <header class="d-flex border-bottom align-items-center gap-2">
-        <img src="assets/sw-logo.png" class=" header_logo border-end m-3" />
-        <span>Movie Database</span>
-    </header>
+  <a class="skip" href="#main">
+    Saltar al contenido principal
+  </a>
 
-    <div class="container-fluid min-vh-100">
+  <aside class="sidebar" aria-label="Menú y ajustes">
 
-        <div class="row h-100">
+    <button type="button" class="mobile-menu-toggle" id="mobile-menu-toggle" aria-expanded="false"
+      aria-controls="sidebar-content">
+      ☰ Menú y ajustes
+    </button>
 
-            <aside class="col-2 border-end p-4 d-flex flex-column">
-                
-                <h3 class="mb-2 pb-4 border-bottom fs-5">Filter by</h3>
+    <div class="sidebar-content" id="sidebar-content">
 
-                <div class="sidebar__form form ">
-                    <div class="form__input mb-3">
-                        <label for="movie" class="form-label">Movie</label>
-                        <select id="movie" class="form-select" name="select-movie"> </select>
-                    </div>
+      <a class="brand" href="#inicio">Star Wars</a>
 
-                    <div class="form__input">
-                        <label for="homeworld" class="form-label">Homeworld</label>
-                        <select id="homeworld" class="form-select" name="select-homeworld"> </select>
-                    </div>
-                </div>
+      <nav aria-label="Navegación principal">
 
-            </aside>
+        <h2>Navegación</h2>
 
+        <ul>
+          <li>
+            <a href="#inicio">Inicio</a>
+          </li>
 
-            <main class="col p-0">
+          <li>
+            <a href="#peliculas">Películas</a>
+          </li>
 
-                <div class="movie_header text-white pb-4">
-                    <div class=" d-flex flex-column align-items-center">
-                        <h2 class="movie__title">A New Hope</h2>
-                        <h4 class="movie__info">Episode 4 - 1977-05-25</h4>
-                        <p class="movie__director"> Director: George Lucas</p>
-                    </div>
-                </div>
+          <li>
+            <a href="#video">Vídeo</a>
+          </li>
 
+          <li>
+            <a href="#legal">Licencias</a>
+          </li>
+        </ul>
 
-                <ul class="row list-unstyled g-4 px-3 mt-1">
+      </nav>
 
-                    <li class="character col-12 col-sm-6 col-lg-3">
-                        <div class="card bg-dark text-white h-100 text-center shadow">
-                            <div class="card-body">
-                                <img src="./assets/user.svg" class="character__image card-image-top w-25" />
-                                <h2 class="character__name">Luke Skywalker</h2>
-                                <div class="character__birth"><strong>Birth Year:</strong> 19 BBY</div>
-                                <div class="character__eye"><strong>Eye color:</strong> Blue</div>
-                                <div class="character__gender"><strong>Gender:</strong> Male</div>
-                                <div class="character__home"><strong>Home World:</strong> Tatooine</div>
-                            </div>
-                        </div>
-                    </li>
+      <section class="sidebar-access" aria-labelledby="h-aj">
 
-                    <li class="character col-12 col-sm-6 col-lg-3">
-                        <div class="card bg-dark text-white h-100 text-center shadow">
-                            <div class="card-body">
-                                <img src="./assets/user.svg" class="character__image card-image-top w-25" />
-                                <h2 class="character__name">Leia Skywalker</h2>
-                                <div class="character__birth"><strong>Birth Year:</strong> 19 BBY</div>
-                                <div class="character__eye"><strong>Eye color:</strong> Blue</div>
-                                <div class="character__gender"><strong>Gender:</strong> Male</div>
-                                <div class="character__home"><strong>Home World:</strong> Tatooine</div>
-                            </div>
-                        </div>
-                    </li>
+        <h2 id="h-aj">Accesibilidad</h2>
 
-                    <li class="character col-12 col-sm-6 col-lg-3">
-                        <div class="card bg-dark text-white h-100 text-center shadow">
-                            <div class="card-body">
-                                <img src="./assets/user.svg" class="character__image card-image-top w-25" />
-                                <h2 class="character__name">Jabba The Hut</h2>
-                                <div class="character__birth"><strong>Birth Year:</strong> 19 BBY</div>
-                                <div class="character__eye"><strong>Eye color:</strong> Blue</div>
-                                <div class="character__gender"><strong>Gender:</strong> Male</div>
-                                <div class="character__home"><strong>Home World:</strong> Tatooine</div>
-                            </div>
-                        </div>
-                    </li>
+        <fieldset>
+          <legend>Sable láser (cursor)</legend>
 
-                    <li class="character col-12 col-sm-6 col-lg-3">
-                        <div class="card bg-dark text-white h-100 text-center shadow">
-                            <div class="card-body">
-                                <img src="./assets/user.svg" class="character__image card-image-top w-25" />
-                                <h2 class="character__name">Luke Skywalker</h2>
-                                <div class="character__birth"><strong>Birth Year:</strong> 19 BBY</div>
-                                <div class="character__eye"><strong>Eye color:</strong> Blue</div>
-                                <div class="character__gender"><strong>Gender:</strong> Male</div>
-                                <div class="character__home"><strong>Home World:</strong> Tatooine</div>
-                            </div>
-                        </div>
-                    </li>
+          <div id="cursor-root"></div>
+        </fieldset>
 
-                    <li class="character col-12 col-sm-6 col-lg-3">
-                        <div class="card bg-dark text-white h-100 text-center shadow">
-                            <div class="card-body">
-                                <img src="./assets/user.svg" class="character__image card-image-top w-25" />
-                                <h2 class="character__name">Luke Skywalker</h2>
-                                <div class="character__birth"><strong>Birth Year:</strong> 19 BBY</div>
-                                <div class="character__eye"><strong>Eye color:</strong> Blue</div>
-                                <div class="character__gender"><strong>Gender:</strong> Male</div>
-                                <div class="character__home"><strong>Home World:</strong> Tatooine</div>
-                            </div>
-                        </div>
-                    </li>
+        <fieldset>
+          <legend>Paleta de color</legend>
 
-                    <li class="character col-12 col-sm-6 col-lg-3">
-                        <div class="card bg-dark text-white h-100 text-center shadow">
-                            <div class="card-body">
-                                <img src="./assets/user.svg" class="character__image card-image-top w-25" />
-                                <h2 class="character__name">Luke Skywalker</h2>
-                                <div class="character__birth"><strong>Birth Year:</strong> 19 BBY</div>
-                                <div class="character__eye"><strong>Eye color:</strong> Blue</div>
-                                <div class="character__gender"><strong>Gender:</strong> Male</div>
-                                <div class="character__home"><strong>Home World:</strong> Tatooine</div>
-                            </div>
-                        </div>
-                    </li>
+          <div id="palette-root"></div>
 
-                    <li class="character col-12 col-sm-6 col-lg-3">
-                        <div class="card bg-dark text-white h-100 text-center shadow">
-                            <div class="card-body">
-                                <img src="./assets/user.svg" class="character__image card-image-top w-25" />
-                                <h2 class="character__name">Luke Skywalker</h2>
-                                <div class="character__birth"><strong>Birth Year:</strong> 19 BBY</div>
-                                <div class="character__eye"><strong>Eye color:</strong> Blue</div>
-                                <div class="character__gender"><strong>Gender:</strong> Male</div>
-                                <div class="character__home"><strong>Home World:</strong> Tatooine</div>
-                            </div>
-                        </div>
-                    </li>
+          <p class="small mt-2">
+            Paletas adaptadas a distintos tipos de
+            daltonismo y escala de grises.
+          </p>
+        </fieldset>
 
-                    <li class="character col-12 col-sm-6 col-lg-3">
-                        <div class="card bg-dark text-white h-100 text-center shadow">
-                            <div class="card-body">
-                                <img src="./assets/user.svg" class="character__image card-image-top w-25" />
-                                <h2 class="character__name">Luke Skywalker</h2>
-                                <div class="character__birth"><strong>Birth Year:</strong> 19 BBY</div>
-                                <div class="character__eye"><strong>Eye color:</strong> Blue</div>
-                                <div class="character__gender"><strong>Gender:</strong> Male</div>
-                                <div class="character__home"><strong>Home World:</strong> Tatooine</div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-        </div>
-        </main>
-    </div>
+      </section>
+
+      <div class="sidebar-tools">
+
+        <audio id="audio" data-src="./img/imperial-march.mp3" preload="none" loop></audio>
+
+        <div id="audio-root"></div>
+
+      </div>
+
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <script type="module" src="mi_js/index.js"></script>
+  </aside>
+
+  <main id="main" class="main-content" tabindex="-1">
+
+    <section id="inicio" class="hero" aria-labelledby="h1">
+
+      <h1 id="h1">
+        Hace mucho tiempo, en una galaxia muy lejana…
+      </h1>
+
+      <p>
+        Una guía sencilla y accesible para descubrir cinco películas
+        de la saga. Apta para todos los públicos y todas las personas.
+      </p>
+
+    </section>
+
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+
+    <section id="peliculas" aria-labelledby="h-p">
+
+      <h2 id="h-p">Cinco películas de la saga</h2>
+
+      <div id="films-root"></div>
+
+    </section>
+
+    <section id="video" aria-labelledby="h-v">
+
+      <h2 id="h-v">Vídeo</h2>
+
+      <!-- Añade poster="./img/vader-poster.webp" cuando tengas la imagen -->
+      <video class="vid" controls preload="metadata" playsinline width="1280" height="720">
+        <source src="./img/vader.mp4" type="video/mp4">
+
+        Tu navegador no admite la reproducción de vídeo.
+      </video>
+
+      <details>
+        <summary>Ver transcripción de texto del vídeo</summary>
+        <p>
+          <strong>[Descripción de la escena]:</strong> Una lanzadera imperial vuela a través del espacio profundo
+          aproximándose a la colosal e incompleta segunda Estrella de la Muerte. La nave aterriza en el hangar
+          principal, donde cientos de tropas imperiales y oficiales se encuentran formados en perfectas filas esperando
+          la llegada. La rampa hidráulica de la nave desciende abriéndose entre una densa nube de vapor, y Darth Vader
+          camina hacia el frente de la formación con su imponente armadura negra mientras se escucha la Marcha Imperial
+          de fondo.
+        </p>
+      </details>
+
+    </section>
+
+  </main>
+
+  <footer id="legal">
+
+    <h2>Licencias, avisos y accesibilidad</h2>
+
+    <ul>
+
+      <li>
+        Star Wars, sus personajes y títulos son marcas y obras
+        de Lucasfilm Ltd. y The Walt Disney Company. Esta es una
+        página de aficionados, sin ánimo de lucro y sin afiliación
+        oficial.
+      </li>
+
+      <li>
+        El código original de esta página web se distribuye bajo
+        la
+        <a href="./LICENSE.txt" target="_blank" rel="noopener noreferrer">
+          Licencia Pública General GNU (GPLv3)
+        </a>.
+        React utiliza la licencia MIT, Bootstrap la licencia MIT
+        y htm la licencia Apache-2.0. Las licencias completas
+        deben consultarse en la carpeta
+        <code>licenses/</code>.
+      </li>
+
+      <li>
+        Accesibilidad: página diseñada teniendo como referencia
+        las pautas WCAG 2.1 nivel AA. El cumplimiento debe
+        comprobarse mediante pruebas de accesibilidad.
+      </li>
+
+      <li>
+        Privacidad: esta página no incorpora formularios de
+        registro ni funciones propias de recopilación de datos.
+        Los recursos externos pueden tener sus propias políticas
+        de privacidad.
+      </li>
+
+    </ul>
+
+    <p class="mb-0">
+      © 2026 Galaxia SW · Fan page
+    </p>
+
+  </footer>
+
+  <noscript>
+    Esta página necesita JavaScript para mostrar las películas y
+    utilizar los controles interactivos.
+  </noscript>
+
 </body>
 
 </html>
