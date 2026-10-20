@@ -16,6 +16,11 @@
   --sg: #a8e6b4;
   --acc: var(--b);
   --sec: var(--sb);
+
+  /* Medidas de la maquetación: las usan el menú, el contenido y el pie.
+     Si cambias el ancho del menú, cámbialo solo aquí. */
+  --sidebar: 290px;
+  --gutter: clamp(1rem, 3vw, 3rem);
 }
 
 *,
@@ -34,6 +39,10 @@ body {
   font: 1.05rem/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   color: #fff;
   background: var(--bg);
+  /* Pie siempre al final: si hay poco contenido, .layout ocupa el hueco */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* PALETAS DE COLOR */
@@ -95,6 +104,14 @@ html[data-cvd="grises"] {
   border-radius: .3rem;
 }
 
+/* Al saltar con el enlace "Saltar al contenido" no se dibuja un marco
+   gigante alrededor de todo <main> */
+.main-content:focus,
+.main-content:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
 .skip {
   position: fixed;
   top: -5rem;
@@ -110,23 +127,59 @@ html[data-cvd="grises"] {
   top: .5rem;
 }
 
-/* SIDEBAR BLANCO */
+/* MAQUETACIÓN: menú + contenido en fila; el pie va fuera, a todo el ancho */
+.layout {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* MENÚ LATERAL (BLANCO). Sticky: acompaña al leer, pero se queda dentro de
+   .layout, así que nunca pasa por encima del pie. */
 .sidebar {
-  position: fixed;
+  position: sticky;
   top: 0;
-  left: 0;
-  bottom: 0;
-  width: 290px;
-  padding: 1.5rem 1rem;
-  background: #fff;
-  color: #111;
-  border-right: 3px solid #d1d5db;
+  flex: 0 0 var(--sidebar);
+  width: var(--sidebar);
+  height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
+  overscroll-behavior: contain;
   z-index: 20;
+  background: #fff;
+  color: #111827;
+  border-right: 3px solid #d1d5db;
+  box-shadow: 4px 0 16px rgba(0, 0, 0, .2);
+}
+
+.sidebar-content {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  box-shadow: 4px 0 16px rgba(0, 0, 0, .2);
+  gap: 1.25rem;
+  min-height: 100%;
+  padding: 1.25rem 1rem;
+}
+
+/* El botón del menú solo existe en móvil */
+.mobile-menu-toggle {
+  display: none;
+  width: 100%;
+  padding: 15px 18px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: #fff;
+  color: #111827;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mobile-menu-toggle:hover,
+.mobile-menu-toggle:focus-visible {
+  background: #f3f4f6;
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
 }
 
 /* LOGOTIPO */
@@ -150,8 +203,7 @@ html[data-cvd="grises"] {
   color: #111;
   font-size: 1.1rem;
   font-weight: 800;
-  margin: 0 0 .75rem;
-  text-align: left;
+  margin: 0 0 .6rem;
   text-align: center;
 }
 
@@ -163,12 +215,12 @@ html[data-cvd="grises"] {
 }
 
 .sidebar nav li {
-  margin-bottom: .3rem;
+  margin-bottom: .2rem;
 }
 
 .sidebar nav a {
   display: block;
-  padding: .55rem .75rem;
+  padding: .5rem .75rem;
   color: #222;
   text-decoration: none;
   border-radius: .45rem;
@@ -182,15 +234,16 @@ html[data-cvd="grises"] {
   text-decoration: underline;
 }
 
-/* ACCESIBILIDAD */
+/* AJUSTES DE ACCESIBILIDAD */
 .sidebar-access {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: .9rem;
 }
 
 .sidebar fieldset {
   min-width: 0;
+  margin: 0;
   border: 1px solid #c5c9d0;
   border-radius: .6rem;
   padding: .75rem;
@@ -200,6 +253,7 @@ html[data-cvd="grises"] {
 .sidebar legend {
   float: none;
   width: auto;
+  margin: 0;
   padding: 0 .25rem;
   color: #111;
   font-size: .9rem;
@@ -213,15 +267,7 @@ html[data-cvd="grises"] {
   margin-bottom: 0;
 }
 
-/* BOTONES DE SABLE Y PALETA */
-.sidebar-access #cursor-root .d-flex,
-.sidebar-access #palette-root .d-flex {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: .4rem !important;
-}
-
+/* BOTONES (sable, paleta, audio, tarjetas...) */
 .btn-sw,
 .btn-sw:hover,
 .btn-sw:focus,
@@ -253,7 +299,24 @@ html[data-cvd="grises"] {
   font-size: .9rem;
 }
 
-/* BOTONES DE AUDIO */
+/* Sable: los tres botones en una fila; si no caben, bajan de línea */
+.sidebar-access #cursor-root .d-flex,
+.sidebar-access #palette-root .d-flex {
+  gap: .4rem !important;
+}
+
+.sidebar-access #cursor-root .btn-sw {
+  width: auto;
+  flex: 1 1 auto;
+}
+
+/* Paleta: una columna */
+.sidebar-access #palette-root .d-flex {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Audio y lector de voz */
 .sidebar-tools {
   margin-top: auto;
 }
@@ -268,12 +331,13 @@ html[data-cvd="grises"] {
 
 /* CONTENIDO PRINCIPAL */
 .main-content {
-  margin-left: 290px;
+  flex: 1 1 0;
   min-width: 0;
-  padding: 1.5rem clamp(1rem, 3vw, 3rem);
+  padding: 1.5rem var(--gutter) 2rem;
 }
 
-section {
+/* Solo las secciones del contenido (no las del menú lateral) */
+main > section {
   padding-top: 2rem;
 }
 
@@ -283,25 +347,51 @@ h2 {
 }
 
 h1 {
-  font-size: clamp(2rem, 5vw, 3.4rem);
-  margin: .5rem 0 1rem;
+  font-size: clamp(1.7rem, 4vw, 2.6rem);
+  line-height: 1.2;
+  margin: 0 0 .75rem;
 }
 
 .hero {
   background: rgba(0, 0, 0, .72);
-  border: 3px solid #fff;
+  border: 2px solid #fff;
   border-radius: 1rem;
-  padding: 2rem;
-  margin-top: .5rem;
+  padding: 1.25rem 1.5rem;
+  margin-top: 0;
+  text-align: center;
 }
 
 .hero p {
   margin-bottom: 0;
 }
 
+/* Aviso flotante: se ve en pantalla esté donde esté la persona.
+   Sigue siendo una región role="status", así que los lectores de pantalla
+   también lo anuncian. Cuando está vacía se oculta sin quitarla del DOM. */
 .status {
-  min-height: 1.6rem;
+  position: fixed;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  z-index: 50;
+  max-width: min(92vw, 560px);
+  margin: 0;
+  padding: .65rem 1.1rem;
+  background: #fff;
+  color: #111;
+  border: 3px solid var(--acc);
+  border-radius: .6rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .5);
   font-weight: 600;
+  text-align: center;
+}
+
+.status:empty {
+  opacity: 0;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  pointer-events: none;
 }
 
 /* TARJETAS DE PELÍCULAS */
@@ -393,9 +483,7 @@ h1 {
 
 .car-track {
   display: flex;
-  transform: translateX(
-    calc(50% - var(--w) / 2 - var(--i) * var(--w))
-  );
+  transform: translateX(calc(50% - var(--w) / 2 - var(--i) * var(--w)));
 }
 
 .car-slide {
@@ -413,10 +501,6 @@ h1 {
 
 .car-slide .card {
   width: 100%;
-}
-
-.car-slide .card:hover {
-  transform: none;
 }
 
 .car-btn,
@@ -480,86 +564,48 @@ html[data-saber="green"] * {
   cursor: url("../img/saber-green.svg") 3 3, auto !important;
 }
 
-/* PIE DE PÁGINA */
+/* PIE DE PÁGINA: a todo el ancho, pegado al final de la página.
+   Compacto: texto pequeño y avisos en dos columnas. */
 footer {
+  padding: 1.25rem var(--gutter);
   background: #000;
   color: #fff;
   border-top: 4px solid #fff;
-  margin-top: 3rem;
-  padding: 2rem 1.5rem;
-  border-radius: .75rem .75rem 0 0;
+  font-size: .9rem;
+  line-height: 1.5;
 }
 
 footer h2 {
-  font-size: 1.4rem;
+  font-size: 1.1rem;
+  margin: 0 0 .75rem;
+}
+
+footer ul {
+  list-style: none;
+  padding: 0;
+  max-width: 1100px;
+  margin: 0 auto 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: .75rem 2rem;
 }
 
 footer a {
   color: #fff;
 }
 
-/* TABLETS */
-@media (max-width: 900px) {
-  .sidebar {
-    width: 240px;
-    padding: 1rem .75rem;
-  }
-
-  .main-content {
-    margin-left: 240px;
-    padding: 1rem;
-  }
-
-  .carousel {
-    --w: 80%;
-  }
-
-  .car-slide {
-    padding: .5rem;
-  }
+footer code {
+  color: #ffd98a;
 }
 
-/* MÓVILES */
-@media (max-width: 600px) {
-  .sidebar {
-    position: relative;
-    width: 100%;
-    height: auto;
-    bottom: auto;
-    border-right: none;
-    border-bottom: 3px solid #d1d5db;
-    overflow: visible;
-  }
-
-  .sidebar-access #cursor-root .d-flex,
-  .sidebar-access #palette-root .d-flex {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .sidebar-access .btn-sw {
-    width: auto;
-  }
-
-  .sidebar-tools {
-    margin-top: 0;
-  }
-
-  .main-content {
-    margin-left: 0;
-    padding: 1rem;
-  }
-
-  .hero {
-    padding: 1.25rem;
-  }
-
-  .carousel {
-    --w: 95%;
-  }
+footer p {
+  margin: 0;
+  padding-top: .75rem;
+  border-top: 1px solid #444;
+  text-align: center;
 }
 
-/* MOVIMIENTO REDUCIDO */
+/* MOVIMIENTO */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -582,151 +628,15 @@ footer a {
   }
 }
 
-
-/* Botón del menú móvil */
-.mobile-menu-toggle {
-    display: none;
-    width: 100%;
-    padding: 15px 18px;
-    border: 1px solid #d1d5db;
-    border-radius: 10px;
-    background: #ffffff;
-    color: #111827;
-    font-size: 1rem;
-    font-weight: 700;
-    text-align: left;
-    cursor: pointer;
-}
-
-.mobile-menu-toggle:hover,
-.mobile-menu-toggle:focus-visible {
-    background: #f3f4f6;
-    outline: 3px solid #2563eb;
-    outline-offset: 2px;
-}
-
-/* Escritorio: sidebar blanco fijo a la izquierda */
-@media (min-width: 601px) {
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 290px;
-        overflow-y: auto;
-        background: #ffffff;
-        color: #111827;
-        border-right: 3px solid #d1d5db;
-        z-index: 1000;
-    }
-
-    .sidebar-content {
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-        min-height: 100%;
-        padding: 24px 18px;
-    }
-
-    .main-content {
-        margin-left: 290px;
-        min-width: 0;
-    }
-}
-
-/* Móvil: menú desplegable debajo de la introducción */
-@media (max-width: 600px) {
-    .main-content {
-        margin-left: 0 !important;
-        padding: 16px;
-        width: 100%;
-    }
-
-    .sidebar {
-        position: relative;
-        inset: auto;
-        width: 100%;
-        height: auto;
-        max-height: none;
-        overflow: visible;
-        margin: 20px 0;
-        padding: 0;
-        background: transparent;
-        color: #111827;
-        border: 0;
-        z-index: 1;
-    }
-
-    .mobile-menu-toggle {
-        display: block;
-    }
-
-    .sidebar-content {
-        display: none;
-        flex-direction: column;
-        gap: 18px;
-        margin-top: 8px;
-        padding: 20px 16px;
-        background: #ffffff;
-        color: #111827;
-        border: 1px solid #d1d5db;
-        border-radius: 12px;
-        box-shadow: 0 5px 18px rgb(0 0 0 / 10%);
-    }
-
-    .sidebar.is-open .sidebar-content {
-        display: flex;
-    }
-
-    .sidebar nav ul {
-        padding-left: 20px;
-    }
-
-    .sidebar nav a {
-        display: inline-block;
-        padding: 8px 0;
-    }
-
-    .sidebar fieldset {
-        min-width: 0;
-        margin: 0;
-        padding: 12px;
-        border: 1px solid #d1d5db;
-        border-radius: 8px;
-    }
-
-    .sidebar-tools {
-        margin-top: 0;
-    }
-
-    .hero h1 {
-        font-size: clamp(1.6rem, 7vw, 2.2rem);
-    }
-
-    .vid {
-        width: 100%;
-        height: auto;
-    }
-}
-
-
-/* ============================================
-   RESERVA DE ESPACIO (evita saltos de diseño, CLS)
-   Ajusta los valores a la altura real que midas
-   ============================================ */
+/* RESERVA DE ESPACIO (evita saltos de diseño, CLS)
+   Ajusta los valores a la altura real que midas */
 #films-root {
   min-height: 620px;
 }
 
-@media (max-width: 600px) {
-  #films-root {
-    min-height: 520px;
-  }
-}
-
 @media (min-width: 601px) {
   #cursor-root {
-    min-height: 146px;
+    min-height: 44px;
   }
 
   #palette-root {
@@ -738,9 +648,7 @@ footer a {
   }
 }
 
-/* ============================================
-   ESTRELLA DE LA MUERTE (SVG animado)
-   ============================================ */
+/* ESTRELLA DE LA MUERTE (SVG animado) */
 #estrella {
   display: flex;
   flex-direction: column;
@@ -755,8 +663,17 @@ footer a {
 #deathstar-root {
   width: 100%;
   max-width: 900px;
-  aspect-ratio: 800 / 420;
   margin-top: 1rem;
+}
+
+/* Reserva el hueco solo hasta que React dibuja la escena (evita CLS);
+   después la altura la marca el contenido */
+#deathstar-root:empty {
+  aspect-ratio: 800 / 420;
+}
+
+.ds {
+  position: relative;
 }
 
 .ds-svg {
@@ -771,9 +688,18 @@ footer a {
 }
 
 .ds-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1rem;
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  pointer-events: none;
+}
+
+.ds-controls .btn-sw {
+  pointer-events: auto;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .6);
 }
 
 .btn-sw[aria-disabled="true"] {
@@ -865,3 +791,99 @@ footer a {
 @keyframes ds-flash { from { opacity: 1; transform: scale(.4); } to { opacity: 0; transform: scale(1.6); } }
 @keyframes ds-ring { from { opacity: 1; transform: scale(.3); } to { opacity: 0; transform: scale(4); } }
 @keyframes ds-fly { from { opacity: 1; transform: translate(0, 0); } to { opacity: 0; transform: translate(var(--dx), var(--dy)); } }
+
+/* ============================================
+   RESPONSIVE (al final para que gane a lo anterior)
+   ============================================ */
+
+/* TABLETS */
+@media (max-width: 900px) {
+  :root {
+    --sidebar: 240px;
+    --gutter: 1rem;
+  }
+
+  .carousel {
+    --w: 80%;
+  }
+
+  .car-slide {
+    padding: .5rem;
+  }
+
+  footer ul {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* MÓVILES: el menú pasa arriba y se despliega con el botón */
+@media (max-width: 600px) {
+  .layout {
+    display: block;
+  }
+
+  .sidebar {
+    position: relative;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    margin: 1rem var(--gutter) 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    z-index: 1;
+  }
+
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .sidebar-content {
+    display: none;
+    min-height: 0;
+    margin-top: 8px;
+    padding: 20px 16px;
+    background: #fff;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgb(0 0 0 / 10%);
+  }
+
+  .sidebar.is-open .sidebar-content {
+    display: flex;
+  }
+
+  .sidebar-access #palette-root .d-flex {
+    flex-direction: row;
+  }
+
+  .sidebar-access #palette-root .btn-sw {
+    width: auto;
+  }
+
+  .sidebar-tools {
+    margin-top: 0;
+  }
+
+  .hero {
+    padding: 1rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.6rem, 7vw, 2.2rem);
+  }
+
+  .carousel {
+    --w: 95%;
+  }
+
+  .ds-controls {
+    position: static;
+    margin-top: 1rem;
+  }
+
+  #films-root {
+    min-height: 520px;
+  }
+
+}

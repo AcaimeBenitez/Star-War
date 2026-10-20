@@ -3,7 +3,14 @@
 'use strict';
 const { useState, useEffect, useRef } = React;
 const html = htm.bind(React.createElement);
-const say = msg => { document.getElementById("status").textContent = msg; };
+// Muestra un aviso (y lo anuncian los lectores de pantalla); se borra solo a los 5 s
+let sayTimer;
+const say = msg => {
+  const el = document.getElementById("status");
+  el.textContent = msg;
+  clearTimeout(sayTimer);
+  sayTimer = setTimeout(() => { el.textContent = ""; }, 5000);
+};
 
 // Copia de data/films.json (por si el navegador bloquea fetch al abrir index.html con doble clic)
 const FALLBACK_FILMS = [{ "id": 1, "t": "Star Wars: Una nueva esperanza", "y": 1977, "era": "Original", "s": "Un joven granjero, una princesa rebelde y un contrabandista se unen para destruir la temible Estrella de la Muerte.", "alt": "Ilustración abstracta: un planeta azul y una gran esfera gris sobre un cielo estrellado.", "img": "img/imagen1.jpg" }, { "id": 2, "t": "El Imperio contraataca", "y": 1980, "era": "Original", "s": "Los rebeldes huyen del Imperio mientras Luke entrena con el maestro Yoda y descubre un secreto familiar.", "alt": "Ilustración abstracta: un planeta helado blanco y azulado con una luna oscura.", "img": "img/imagen2.jpg" }, { "id": 3, "t": "El retorno del Jedi", "y": 1983, "era": "Original", "s": "La Rebelión planea su ataque final contra el Imperio mientras Luke se enfrenta a su destino.", "alt": "Ilustración abstracta: un bosque verde en una luna y una estación espacial en construcción.", "img": "img/imagen3.jpg" }, { "id": 4, "t": "La amenaza fantasma", "y": 1999, "era": "Precuelas", "s": "Dos Jedi ayudan a la reina de Naboo y conocen a un niño muy especial llamado Anakin.", "alt": "Ilustración abstracta: un desierto dorado con dos soles y una nave plateada.", "img": "img/imagen4.jpg" }, { "id": 5, "t": "La venganza de los Sith", "y": 2005, "era": "Precuelas", "s": "La República cae y Anakin toma una decisión que cambiará la galaxia para siempre.", "alt": "Ilustración abstracta: un planeta volcánico rojo y oscuro con chispas de lava.", "img": "img/imagen5.jpg" }];
